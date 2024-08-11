@@ -1,3 +1,4 @@
+import math
 from os.path import splitext
 from datetime import timezone
 
@@ -62,3 +63,33 @@ def process_file(content, path):
 def remove_prefix_from_path(content, key, path):
     content[key] = content.get(key).replace(path, '')
     return content
+
+
+def convert_size(size_bytes):
+    """
+    Convert a size in bytes to a human-readable string format.
+
+    Args:
+        size_bytes (int): Size in bytes.
+
+    Returns:
+        str: Human-readable string format (e.g., "10MB", "38.5MB", "5GB").
+    """
+    if size_bytes == 0:
+      return "0B"
+
+    size_name = ("B", "KB", "MB", "GB", "TB", "PB")
+    i = int(math.floor(math.log(size_bytes, 1024)))
+    p = math.pow(1024, i)
+    s = round(size_bytes / p, 2)
+
+    # Remove unnecessary decimals (e.g., 10.0MB -> 10MB)
+    if s.is_integer():
+      s = int(s)
+
+    return f"{s}{size_name[i]}"
+
+
+def convert_response(file: dict):
+    file["size"] = convert_size(file["size"])
+    return file
