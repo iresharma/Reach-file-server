@@ -10,7 +10,7 @@ service FileServerPackage {
   rpc ListFile(ListFileRequest) returns (ListFileResponse);
   rpc PreSignedGet(GetFileRequest) returns (GetFileResponse);
   rpc PreSignedDelete(FileOperationRequest) returns (OkResponse);
-  rpc PreSignedPut(FileOperationRequest) returns (OkResponse);
+  rpc PreSignedPut(FileOperationRequest) returns (GetFileResponse);
 }
 
 // =============== Data Models ===============
@@ -24,7 +24,7 @@ message GetServerRequest {
 }
 
 message FileOperationRequest {
-  string fileName = 1;
+  string path = 1;
   string bucketId = 2;
 }
 
@@ -34,7 +34,7 @@ message ListFileRequest {
 }
 
 message GetFileRequest {
-  string bucketId = 1;
+  string userAccountId = 1;
   string path = 2;
 }
 

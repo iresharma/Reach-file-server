@@ -51,6 +51,7 @@ class File(BaseModel):
     path = CharField(unique=True)
     size = CharField(null=True)
     lastModified = CharField()
+    bucket_id = CharField()
     folder = ForeignKeyField(Folder, backref='tweets')
 
 

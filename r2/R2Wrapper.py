@@ -85,6 +85,21 @@ class R2Wrapper:
                 return None
         return response
 
+    def delete_object(self, bucket_name: str, object_key: str):
+        try:
+            response = self.client.delete_object(Bucket=bucket_name, Key=object_key)
+        except NoCredentialsError:
+            print("Credentials not available")
+            return None
+        except ClientError as e:
+            if e.response['Error']['Code'] == '404':
+                print("The object does not exist.")
+                return None
+            else:
+                print(f"Unexpected error: {e}")
+                return None
+        return response
+
     def pre_signed_put(self, bucket_name: str, object_key: str, expiration: int = 3600):
         try:
             response = self.client.generate_presigned_url(
