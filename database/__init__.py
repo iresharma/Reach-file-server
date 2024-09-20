@@ -39,12 +39,6 @@ class Storage(BaseModel):
     user_account_id = CharField(unique=True)
 
 
-class Folder(BaseModel):
-    id = CharField(unique=True, primary_key=True)
-    name = CharField()
-    path = CharField(unique=True)
-
-
 class File(BaseModel):
     id = CharField(unique=True, primary_key=True)
     name = CharField()
@@ -52,11 +46,14 @@ class File(BaseModel):
     size = CharField(null=True)
     lastModified = CharField()
     bucket_id = CharField()
-    folder = ForeignKeyField(Folder, backref='tweets')
 
+class Iteration(BaseModel):
+    id = CharField(unique=True, primary_key=True)
+    name = CharField(unique=True)
+    files = ForeignKeyField(File, backref="iteration")
 
 db.connect()
-db.create_tables([Storage, Folder, File])
+db.create_tables([Storage, File])
 
 
 def create_file(name, path, size, last_modified):
